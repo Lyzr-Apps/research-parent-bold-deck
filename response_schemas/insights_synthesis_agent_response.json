@@ -2,14 +2,25 @@
   "agent_name": "Insights Synthesis Agent",
   "agent_id": "69702e84d6d0dcaec1115906",
   "agent_purpose": "analyzer",
-  "description": "Transforms research findings into organized, actionable parenting insights formatted for email delivery with topic sections",
+  "description": "Transforms research findings into organized, actionable parenting insights with SPECIFIC actions parents can take, formatted for email delivery with topic sections",
   "response_schema": {
-    "status": "string",
+    "status": "string (success|error)",
     "result": {
       "digest_title": "string",
       "introduction": "string",
       "topic_sections": [
-        "any"
+        {
+          "topic_area": "string",
+          "emoji": "string",
+          "findings": [
+            {
+              "research_summary": "string",
+              "actionable_implication": "string (SPECIFIC action with numbers/times/frequencies)",
+              "source": "string",
+              "date": "string (YYYY-MM)"
+            }
+          ]
+        }
       ],
       "total_topics_covered": "string",
       "total_insights": "string",
@@ -17,33 +28,62 @@
     },
     "metadata": {
       "agent_name": "string",
-      "timestamp": "string",
-      "error_reason": "string",
-      "note": "string"
+      "timestamp": "string (ISO)"
     }
   },
   "example_response": {
-    "status": "error",
+    "status": "success",
     "result": {
-      "digest_title": "Parenting Science Digest - Unable to Generate",
-      "introduction": "No research findings were provided to analyze. To create a parenting insights digest, please provide research findings or studies to translate into actionable tips.",
-      "topic_sections": [],
-      "total_topics_covered": "0",
-      "total_insights": "0",
-      "closing_message": "Please submit research findings, and I'll transform them into organized, actionable parenting insights ready for email delivery."
+      "digest_title": "Parenting Science Digest - January 2025",
+      "introduction": "Welcome to this month's digest of the latest parenting science research, translated into actions you can take today.",
+      "topic_sections": [
+        {
+          "topic_area": "Sleep",
+          "emoji": "😴",
+          "findings": [
+            {
+              "research_summary": "Recent longitudinal study found that consistent bedtime routines between 7-8pm were associated with 40% fewer behavioral issues in preschool-aged children compared to irregular sleep schedules.",
+              "actionable_implication": "Set a consistent bedtime routine between 7-8pm for children under 5, including the same sequence of activities each night (bath, story, song, lights out).",
+              "source": "Child Development",
+              "date": "2024-11"
+            }
+          ]
+        },
+        {
+          "topic_area": "Nutrition",
+          "emoji": "🥗",
+          "findings": [
+            {
+              "research_summary": "Meta-analysis of 25 studies showed that children consuming omega-3 fatty acids 2-3 times per week demonstrated improved cognitive performance and focus in classroom settings.",
+              "actionable_implication": "Include omega-3 rich foods like salmon, sardines, or walnuts in your child's diet 2-3 times per week, aiming for 250-500mg of combined EPA/DHA for children ages 4-8.",
+              "source": "Journal of Pediatrics",
+              "date": "2024-10"
+            }
+          ]
+        },
+        {
+          "topic_area": "Technology",
+          "emoji": "📱",
+          "findings": [
+            {
+              "research_summary": "Large-scale study of 5,000 children found that limiting recreational screen time to 1 hour per day was associated with better social skills and lower anxiety levels in children ages 2-5.",
+              "actionable_implication": "Limit recreational screen time to 1 hour per day for children ages 2-5, and ensure screens are turned off at least 1 hour before bedtime.",
+              "source": "Developmental Psychology",
+              "date": "2024-12"
+            }
+          ]
+        }
+      ],
+      "total_topics_covered": "3",
+      "total_insights": "3",
+      "closing_message": "Remember: Small, consistent actions make the biggest difference in your child's development. Start with one change this week!"
     },
     "metadata": {
       "agent_name": "Insights Synthesis Agent",
-      "timestamp": "2025-01-18T00:00:00Z",
-      "error_reason": "No research findings provided in input",
-      "note": "This is a test response - actual digest requires research data as input"
+      "timestamp": "2025-01-21T00:00:00Z"
     }
   },
-  "is_actual_tested": true,
-  "test_timestamp": "2026-01-21T01:43:35.330052",
-  "test_message_used": "Analyze this sample data for testing",
-  "actual_test_response": {
-    "raw_text": "```json\n{\n  \"status\": \"error\",\n  \"result\": {\n    \"digest_title\": \"Parenting Science Digest - Unable to Generate\",\n    \"introduction\": \"No research findings were provided to analyze and transform into parenting insights.\",\n    \"topic_sections\": [],\n    \"total_topics_covered\": \"0\",\n    \"total_insights\": \"0\",\n    \"closing_message\": \"Please provide research findings to generate your personalized parenting digest with actionable insights across nutrition, sleep, learning, behavior, emotional/social development, mental health, technology, and language development.\"\n  },\n  \"metadata\": {\n    \"agent_name\": \"Insights Synthesis Agent\",\n    \"timestamp\": \"2025-01-13T00:00:00Z\",\n    \"error_message\": \"No research findings provided in input\",\n    \"requested_topic_areas\": [\n      \"nutrition\",\n      \"sleep\",\n      \"learning\",\n      \"behavior\",\n      \"emotional/social development\",\n      \"mental health\",\n      \"technology\",\n      \"language\"\n    ]\n  }\n}\n```"
-  },
-  "test_passed": false
+  "is_actual_tested": false,
+  "schema_updated": "2026-01-21T00:00:00Z",
+  "update_reason": "Enhanced to require SPECIFIC actionable implications with numbers, times, and frequencies instead of vague advice"
 }

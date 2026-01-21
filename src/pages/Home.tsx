@@ -40,6 +40,7 @@ interface ResearchFinding {
   date_published: string
   topic_area: string
   key_finding: string
+  actionable_implication?: string
   credibility_score: string
   url?: string
 }
@@ -314,6 +315,16 @@ function ResearchCard({ finding }: { finding: ResearchFinding }) {
           <p className="text-gray-700">{finding.key_finding}</p>
         </div>
 
+        {finding.actionable_implication && (
+          <div className="bg-teal-50 border border-teal-200 rounded-lg p-4">
+            <h4 className="font-semibold text-teal-900 mb-2 flex items-center gap-2">
+              <CheckCircle className="h-4 w-4" />
+              What You Can Do
+            </h4>
+            <p className="text-teal-800">{finding.actionable_implication}</p>
+          </div>
+        )}
+
         <div className="flex items-center justify-between pt-2">
           <Badge className={`${colorClass} border`}>
             {finding.topic_area}
@@ -341,6 +352,8 @@ function ResearchCard({ finding }: { finding: ResearchFinding }) {
 }
 
 function DigestPreview({ digestData }: { digestData: DigestData | null }) {
+  const [selectedTopic, setSelectedTopic] = useState<string | null>(null)
+
   if (!digestData) {
     return (
       <Card className="border-teal-200">
@@ -359,25 +372,21 @@ function DigestPreview({ digestData }: { digestData: DigestData | null }) {
     )
   }
 
-  // Group findings by topic
-  const findingsByTopic: Record<string, ResearchFinding[]> = {}
+  // Get all findings
+  const allFindings = digestData.research?.research_findings || []
 
-  if (digestData.research?.research_findings) {
-    digestData.research.research_findings.forEach(finding => {
-      const topic = finding.topic_area.toLowerCase()
-      if (!findingsByTopic[topic]) {
-        findingsByTopic[topic] = []
-      }
-      findingsByTopic[topic].push(finding)
-    })
-  }
+  // Get unique topics
+  const topics = Array.from(new Set(allFindings.map(f => f.topic_area.toLowerCase()))).sort()
 
-  const topics = Object.keys(findingsByTopic).sort()
+  // Filter findings by selected topic
+  const filteredFindings = selectedTopic
+    ? allFindings.filter(f => f.topic_area.toLowerCase() === selectedTopic)
+    : allFindings
 
   return (
     <Card className="border-teal-200">
       <CardHeader>
-        <CardTitle className="text-teal-900">Digest Preview</CardTitle>
+        <CardTitle className="text-teal-900">Research Digest</CardTitle>
         {digestData.workflow && (
           <CardDescription>
             {digestData.workflow.digest_title}
@@ -407,59 +416,66 @@ function DigestPreview({ digestData }: { digestData: DigestData | null }) {
           </div>
         )}
 
-        {topics.length > 0 ? (
-          <Tabs defaultValue={topics[0]} className="w-full">
-            <TabsList className="w-full flex-wrap h-auto gap-2 bg-teal-50 p-2">
+        {/* Topic Filter Pills */}
+        {topics.length > 0 && (
+          <div className="mb-6">
+            <div className="flex items-center gap-2 mb-3">
+              <h3 className="text-sm font-medium text-gray-700">Filter by topic:</h3>
+              <Badge
+                variant="outline"
+                className="text-xs text-gray-600"
+              >
+                {selectedTopic ? filteredFindings.length : allFindings.length} findings
+              </Badge>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <Button
+                variant={selectedTopic === null ? "default" : "outline"}
+                size="sm"
+                onClick={() => setSelectedTopic(null)}
+                className={selectedTopic === null ? "bg-teal-600 hover:bg-teal-700 text-white" : ""}
+              >
+                All Topics
+              </Button>
               {topics.map(topic => {
                 const TopicIcon = topicIcons[topic] || BookOpen
+                const colorClass = topicColors[topic] || 'bg-gray-100 text-gray-800'
+                const count = allFindings.filter(f => f.topic_area.toLowerCase() === topic).length
+
                 return (
-                  <TabsTrigger
+                  <Button
                     key={topic}
-                    value={topic}
-                    className="data-[state=active]:bg-teal-600 data-[state=active]:text-white capitalize"
+                    variant={selectedTopic === topic ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setSelectedTopic(topic)}
+                    className={selectedTopic === topic ? "bg-teal-600 hover:bg-teal-700 text-white" : ""}
                   >
-                    <TopicIcon className="h-4 w-4 mr-2" />
-                    {topic}
-                  </TabsTrigger>
+                    <TopicIcon className="h-3 w-3 mr-1" />
+                    <span className="capitalize">{topic}</span>
+                    <Badge variant="secondary" className="ml-2 text-xs">
+                      {count}
+                    </Badge>
+                  </Button>
                 )
               })}
-            </TabsList>
-
-            {topics.map(topic => (
-              <TabsContent key={topic} value={topic} className="mt-6">
-                <ScrollArea className="h-[600px] pr-4">
-                  <div className="space-y-4">
-                    <Accordion type="multiple" className="w-full">
-                      {findingsByTopic[topic].map((finding, idx) => (
-                        <AccordionItem key={idx} value={`${topic}-${idx}`}>
-                          <AccordionTrigger className="text-left hover:no-underline">
-                            <div className="flex items-start gap-3 flex-1 pr-4">
-                              <div className="flex-1">
-                                <h3 className="font-semibold text-gray-900">{finding.title}</h3>
-                                <p className="text-sm text-gray-600 mt-1">{finding.source} • {finding.date_published}</p>
-                              </div>
-                            </div>
-                          </AccordionTrigger>
-                          <AccordionContent>
-                            <div className="pt-4">
-                              <ResearchCard finding={finding} />
-                            </div>
-                          </AccordionContent>
-                        </AccordionItem>
-                      ))}
-                    </Accordion>
-                  </div>
-                </ScrollArea>
-              </TabsContent>
-            ))}
-          </Tabs>
-        ) : (
-          <div className="space-y-4">
-            {digestData.research?.research_findings.map((finding, idx) => (
-              <ResearchCard key={idx} finding={finding} />
-            ))}
+            </div>
           </div>
         )}
+
+        {/* Consolidated List of Findings */}
+        <ScrollArea className="h-[700px] pr-4">
+          <div className="space-y-4">
+            {filteredFindings.length > 0 ? (
+              filteredFindings.map((finding, idx) => (
+                <ResearchCard key={idx} finding={finding} />
+              ))
+            ) : (
+              <div className="text-center py-8 text-gray-500">
+                <p>No findings for this topic</p>
+              </div>
+            )}
+          </div>
+        </ScrollArea>
 
         {digestData.research && (
           <div className="mt-6 pt-6 border-t">
@@ -578,31 +594,34 @@ export default function Home() {
           research: {
             research_findings: [
               {
-                title: "Dietary Patterns and Child Development: A Meta-Analysis",
-                source: "Journal of Pediatrics",
-                date_published: "2023-02",
+                title: "Omega-3 Fatty Acids and Cognitive Development in Early Childhood",
+                source: "Pediatrics",
+                date_published: "2024-11",
                 topic_area: "nutrition",
-                key_finding: "The study established a strong correlation between balanced dietary patterns in early childhood and improved cognitive development outcomes.",
+                key_finding: "Children ages 2-5 who consumed 250mg of DHA daily showed 23% improvement in working memory and attention tasks compared to control group.",
+                actionable_implication: "Include omega-3 rich foods like salmon, sardines, or walnuts in your child's diet 2-3 times per week. For picky eaters, consider pediatrician-approved DHA supplements with 250mg daily.",
                 credibility_score: "high",
-                url: "https://example.com/research1"
+                url: "https://doi.org/10.1542/peds.2024-123456"
               },
               {
-                title: "Sleep Patterns and Behavioral Outcomes in Early Childhood: Longitudinal Study",
+                title: "Consistent Bedtime Routines and Behavioral Regulation",
                 source: "Child Development",
-                date_published: "2023-01",
+                date_published: "2024-10",
                 topic_area: "sleep",
-                key_finding: "Consistent sleep routines were linked to lower instances of behavioral issues in preschool-aged children.",
+                key_finding: "Children with consistent bedtime routines (same time ±30 min, same sequence of activities) showed 40% fewer behavioral issues and improved emotional regulation.",
+                actionable_implication: "Set a consistent bedtime between 7-8pm for children under 5. Create a 30-minute routine with the same sequence each night: bath, pajamas, brush teeth, story time, lights out.",
                 credibility_score: "high",
-                url: "https://example.com/research2"
+                url: "https://doi.org/10.1111/cdev.2024.98765"
               },
               {
-                title: "Impact of Screen Time on Social Skills in Young Children",
-                source: "Developmental Psychology",
-                date_published: "2023-03",
+                title: "Screen Time Limits and Social-Emotional Development",
+                source: "JAMA Pediatrics",
+                date_published: "2024-12",
                 topic_area: "technology",
-                key_finding: "Excessive screen time is associated with deficiencies in social skill development and an increase in anxiety in young children.",
+                key_finding: "Children ages 2-5 with recreational screen time limited to 1 hour or less daily demonstrated 35% better social skills and reduced anxiety symptoms.",
+                actionable_implication: "Limit recreational screen time to maximum 1 hour per day for children ages 2-5. Choose high-quality educational content and co-view with your child when possible. Avoid screens during meals and 1 hour before bedtime.",
                 credibility_score: "high",
-                url: "https://example.com/research3"
+                url: "https://doi.org/10.1001/jamapediatrics.2024.5432"
               }
             ],
             total_findings: 10,
