@@ -281,19 +281,35 @@ export async function callAIAgent(
     } else {
       // API error
       let errorMsg = `API returned status ${response.status}`
+      let details = rawText
+
       try {
         const errorData = parseLLMJson(rawText) || JSON.parse(rawText)
         errorMsg = errorData?.error || errorData?.message || errorMsg
       } catch {}
 
+      // Add specific error messages for common HTTP status codes
+      if (response.status === 429) {
+        errorMsg = 'API credits exhausted. Please try again later or contact support.'
+      } else if (response.status === 401) {
+        errorMsg = 'Authentication failed. Please check your API key.'
+      } else if (response.status === 500) {
+        errorMsg = 'Server error. Please try again in a few minutes.'
+      }
+
+      // Create error object with status code
+      const error = new Error(errorMsg)
+      ;(error as any).status = response.status
+
       return {
         success: false,
         response: {
           status: 'error',
-          result: {},
+          result: { http_status: response.status },
           message: errorMsg
         },
         error: errorMsg,
+        details,
         raw_response: rawText,
       }
     }

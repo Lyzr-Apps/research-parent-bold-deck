@@ -539,7 +539,24 @@ export default function Home() {
 
       const result = await callAIAgent(message, MANAGER_AGENT_ID)
 
-      if (result.success && result.response.status === 'success') {
+      // Check for API-level errors first
+      if (!result.success) {
+        // Extract HTTP status from result if available
+        const httpStatus = result.response?.result?.http_status
+        let errorMessage = result.response?.message || result.error || 'Failed to generate digest'
+
+        if (httpStatus === 429) {
+          errorMessage = 'API credits exhausted. The service is temporarily unavailable. Please contact support or try again later.'
+        }
+
+        setNotification({
+          type: 'error',
+          message: errorMessage
+        })
+        return
+      }
+
+      if (result.response.status === 'success') {
         const responseData = result.response.result
 
         // Try to extract structured data from the response
@@ -620,11 +637,25 @@ export default function Home() {
           message: result.response.message || 'Failed to generate digest. Please try again.'
         })
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error generating digest:', error)
+
+      // Check for specific error types
+      let errorMessage = 'An error occurred while generating the digest. Please try again.'
+
+      if (error?.message?.includes('429') || error?.status === 429) {
+        errorMessage = 'API credits exhausted. The service is temporarily unavailable due to rate limiting. Please contact support or try again later.'
+      } else if (error?.message?.includes('401') || error?.status === 401) {
+        errorMessage = 'Authentication error. Please refresh the page and try again.'
+      } else if (error?.message?.includes('500') || error?.status === 500) {
+        errorMessage = 'Server error. The AI service is temporarily unavailable. Please try again in a few minutes.'
+      } else if (error?.message) {
+        errorMessage = `Error: ${error.message}`
+      }
+
       setNotification({
         type: 'error',
-        message: 'An error occurred while generating the digest. Please try again.'
+        message: errorMessage
       })
     } finally {
       setIsGenerating(false)
