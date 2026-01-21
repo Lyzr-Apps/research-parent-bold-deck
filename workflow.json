@@ -1,0 +1,150 @@
+{
+  "workflow_name": "Parenting Science Digest",
+  "workflow_type": "manager_subagent",
+  "description": "Orchestrates research discovery, synthesis, and email delivery for parenting science digest",
+  "created_at": "2026-01-21T00:00:00Z",
+  "nodes": [
+    {
+      "id": "user_input",
+      "type": "Input",
+      "label": "Generate & Send Digest Request",
+      "nodeCategory": "input",
+      "position": { "x": 100, "y": 100 }
+    },
+    {
+      "id": "parenting_digest_coordinator",
+      "type": "Agent",
+      "label": "Parenting Digest Coordinator",
+      "nodeCategory": "agent",
+      "agent_id": "69702ecdd6d0dcaec1115908",
+      "agent_name": "Parenting Digest Coordinator",
+      "provider": "Anthropic",
+      "model": "claude-sonnet-4-5",
+      "temperature": 0.3,
+      "top_p": 1,
+      "position": { "x": 400, "y": 100 }
+    },
+    {
+      "id": "research_discovery_agent",
+      "type": "Agent",
+      "label": "Research Discovery Agent",
+      "nodeCategory": "agent",
+      "agent_id": "69702e6a1d92f5e2dd227fa3",
+      "agent_name": "Research Discovery Agent",
+      "provider": "Perplexity",
+      "model": "sonar-pro",
+      "temperature": 0.2,
+      "top_p": 1,
+      "position": { "x": 700, "y": 0 }
+    },
+    {
+      "id": "insights_synthesis_agent",
+      "type": "Agent",
+      "label": "Insights Synthesis Agent",
+      "nodeCategory": "agent",
+      "agent_id": "69702e84d6d0dcaec1115906",
+      "agent_name": "Insights Synthesis Agent",
+      "provider": "Anthropic",
+      "model": "claude-sonnet-4-5",
+      "temperature": 0.5,
+      "top_p": 0.95,
+      "position": { "x": 700, "y": 100 }
+    },
+    {
+      "id": "email_delivery_agent",
+      "type": "Agent",
+      "label": "Email Delivery Agent",
+      "nodeCategory": "agent",
+      "agent_id": "69702ea3d6d0dcaec1115907",
+      "agent_name": "Email Delivery Agent",
+      "provider": "Anthropic",
+      "model": "claude-sonnet-4-5",
+      "temperature": 0.2,
+      "top_p": 1,
+      "tools": ["gmail"],
+      "position": { "x": 700, "y": 200 }
+    },
+    {
+      "id": "digest_output",
+      "type": "Output",
+      "label": "Digest Sent Confirmation",
+      "nodeCategory": "end",
+      "position": { "x": 1000, "y": 100 }
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "source": "user_input",
+      "target": "parenting_digest_coordinator"
+    },
+    {
+      "id": "e2",
+      "source": "parenting_digest_coordinator",
+      "target": "research_discovery_agent"
+    },
+    {
+      "id": "e3",
+      "source": "parenting_digest_coordinator",
+      "target": "insights_synthesis_agent"
+    },
+    {
+      "id": "e4",
+      "source": "parenting_digest_coordinator",
+      "target": "email_delivery_agent"
+    },
+    {
+      "id": "e5",
+      "source": "email_delivery_agent",
+      "target": "digest_output"
+    }
+  ],
+  "agents": {
+    "manager": {
+      "agent_id": "69702ecdd6d0dcaec1115908",
+      "agent_name": "Parenting Digest Coordinator",
+      "description": "Orchestrates the research-to-email workflow",
+      "provider": "Anthropic",
+      "model": "claude-sonnet-4-5",
+      "temperature": 0.3,
+      "top_p": 1,
+      "managed_agents": [
+        "69702e6a1d92f5e2dd227fa3",
+        "69702e84d6d0dcaec1115906",
+        "69702ea3d6d0dcaec1115907"
+      ]
+    },
+    "sub_agents": [
+      {
+        "agent_id": "69702e6a1d92f5e2dd227fa3",
+        "agent_name": "Research Discovery Agent",
+        "description": "Searches for top 10 latest parenting science research findings",
+        "provider": "Perplexity",
+        "model": "sonar-pro",
+        "temperature": 0.2,
+        "top_p": 1,
+        "tools": []
+      },
+      {
+        "agent_id": "69702e84d6d0dcaec1115906",
+        "agent_name": "Insights Synthesis Agent",
+        "description": "Transforms research into actionable insights organized by topic",
+        "provider": "Anthropic",
+        "model": "claude-sonnet-4-5",
+        "temperature": 0.5,
+        "top_p": 0.95,
+        "tools": []
+      },
+      {
+        "agent_id": "69702ea3d6d0dcaec1115907",
+        "agent_name": "Email Delivery Agent",
+        "description": "Formats and sends digest via Gmail",
+        "provider": "Anthropic",
+        "model": "claude-sonnet-4-5",
+        "temperature": 0.2,
+        "top_p": 1,
+        "tools": ["gmail"]
+      }
+    ]
+  }
+}

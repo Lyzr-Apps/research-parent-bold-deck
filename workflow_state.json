@@ -1,0 +1,131 @@
+{
+  "workflow_name": "Parenting Science Digest",
+  "workflow_type": "manager_subagent",
+  "created_at": "2026-01-21T00:00:00Z",
+  "agents": {
+    "manager": {
+      "agent_id": "69702ecdd6d0dcaec1115908",
+      "agent_name": "Parenting Digest Coordinator",
+      "agent_type": "manager",
+      "provider": "Anthropic",
+      "model": "claude-sonnet-4-5",
+      "temperature": 0.3,
+      "top_p": 1,
+      "manages": [
+        "69702e6a1d92f5e2dd227fa3",
+        "69702e84d6d0dcaec1115906",
+        "69702ea3d6d0dcaec1115907"
+      ]
+    },
+    "sub_agents": [
+      {
+        "agent_id": "69702e6a1d92f5e2dd227fa3",
+        "agent_name": "Research Discovery Agent",
+        "agent_type": "sub_agent",
+        "provider": "Perplexity",
+        "model": "sonar-pro",
+        "temperature": 0.2,
+        "top_p": 1,
+        "tools": [],
+        "purpose": "Searches for top 10 latest parenting science research findings"
+      },
+      {
+        "agent_id": "69702e84d6d0dcaec1115906",
+        "agent_name": "Insights Synthesis Agent",
+        "agent_type": "sub_agent",
+        "provider": "Anthropic",
+        "model": "claude-sonnet-4-5",
+        "temperature": 0.5,
+        "top_p": 0.95,
+        "tools": [],
+        "purpose": "Transforms research into actionable insights organized by topic"
+      },
+      {
+        "agent_id": "69702ea3d6d0dcaec1115907",
+        "agent_name": "Email Delivery Agent",
+        "agent_type": "sub_agent",
+        "provider": "Anthropic",
+        "model": "claude-sonnet-4-5",
+        "temperature": 0.2,
+        "top_p": 1,
+        "tools": ["gmail"],
+        "purpose": "Formats and sends digest via Gmail"
+      }
+    ]
+  },
+  "workflow_graph": {
+    "nodes": [
+      {
+        "id": "user_input",
+        "type": "Input",
+        "label": "Generate & Send Digest Request",
+        "nodeCategory": "input"
+      },
+      {
+        "id": "parenting_digest_coordinator",
+        "type": "Agent",
+        "label": "Parenting Digest Coordinator",
+        "nodeCategory": "agent",
+        "agent_id": "69702ecdd6d0dcaec1115908"
+      },
+      {
+        "id": "research_discovery_agent",
+        "type": "Agent",
+        "label": "Research Discovery Agent",
+        "nodeCategory": "agent",
+        "agent_id": "69702e6a1d92f5e2dd227fa3"
+      },
+      {
+        "id": "insights_synthesis_agent",
+        "type": "Agent",
+        "label": "Insights Synthesis Agent",
+        "nodeCategory": "agent",
+        "agent_id": "69702e84d6d0dcaec1115906"
+      },
+      {
+        "id": "email_delivery_agent",
+        "type": "Agent",
+        "label": "Email Delivery Agent",
+        "nodeCategory": "agent",
+        "agent_id": "69702ea3d6d0dcaec1115907"
+      },
+      {
+        "id": "digest_output",
+        "type": "Output",
+        "label": "Digest Sent Confirmation",
+        "nodeCategory": "end"
+      }
+    ],
+    "edges": [
+      {
+        "source": "user_input",
+        "target": "parenting_digest_coordinator"
+      },
+      {
+        "source": "parenting_digest_coordinator",
+        "target": "research_discovery_agent"
+      },
+      {
+        "source": "parenting_digest_coordinator",
+        "target": "insights_synthesis_agent"
+      },
+      {
+        "source": "parenting_digest_coordinator",
+        "target": "email_delivery_agent"
+      },
+      {
+        "source": "email_delivery_agent",
+        "target": "digest_output"
+      }
+    ]
+  },
+  "response_schemas": [
+    "response_schemas/research_discovery_agent_response.json",
+    "response_schemas/insights_synthesis_agent_response.json",
+    "response_schemas/email_delivery_agent_response.json",
+    "response_schemas/parenting_digest_coordinator_response.json"
+  ],
+  "status": "complete",
+  "all_agents_created": true,
+  "total_agents": 4
+}

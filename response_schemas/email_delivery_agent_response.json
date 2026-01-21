@@ -1,0 +1,47 @@
+{
+  "agent_name": "Email Delivery Agent",
+  "agent_id": "69702ea3d6d0dcaec1115907",
+  "agent_purpose": "assistant",
+  "description": "Sends formatted parenting digest email via Gmail and returns delivery confirmation with metadata",
+  "response_schema": {
+    "status": "string (success|error)",
+    "result": {
+      "response": "string",
+      "action_taken": "string (optional)",
+      "data": "object (optional, any structured data)",
+      "suggestions": [
+        "string (optional)"
+      ]
+    },
+    "metadata": {
+      "agent_name": "string",
+      "timestamp": "string (ISO)"
+    }
+  },
+  "example_response": {
+    "status": "success",
+    "result": {
+      "response": "I've completed the task you requested",
+      "action_taken": "Processed the input and generated output",
+      "data": {
+        "key": "value"
+      },
+      "suggestions": [
+        "You might also want to try X"
+      ]
+    },
+    "metadata": {
+      "agent_name": "Email Delivery Agent",
+      "timestamp": "2025-01-15T10:30:00Z"
+    }
+  },
+  "is_actual_tested": false,
+  "test_timestamp": "2026-01-21T01:43:43.117895",
+  "test_message_used": "Hello, provide a sample response",
+  "raw_test_response": "I've created a sample response showing my expected output format. \n\n**What I do:**\n- Format parenting science research insights into professional HTML emails\n- Send digests via Gmail to specified recipients\n- Return structured JSON responses with delivery confirmation\n\n**To actually send an email, I would need:**\n1. Synthesized research insights (topics, findings, actionable tips)\n2. Recipient email address\n3. Optional: recipient name for personalization\n\nWould you like me to:\n- Show you a sample HTML email format?\n- Demonstrate with mock data?\n- Explain my email formatting structure in detail?\n\nPlease let me know what specific sample would be most helpful!",
+  "test_error": "Response not valid JSON: Expecting value: line 1 column 1 (char 0)",
+  "actual_test_response": {
+    "raw_text": "I need to clarify a few things before I can format and send your parenting science digest:\n\n1. **Research Content**: Do you have the 10 research findings already prepared, or would you like me to create sample/placeholder research insights for demonstration purposes?\n\n2. **Topics**: What topic areas should these findings cover? (e.g., Sleep, Nutrition, Learning & Development, Emotional Regulation, Screen Time, etc.)\n\n3. **Recipient Name**: Should I address the email to a specific name, or use a general greeting like \"Hello Parent\"?\n\n4. **Month/Year**: What month and year should appear in the subject line?\n\n5. **Synthesis Details**: Do you have:\n   - An introduction paragraph?\n   - A closing message?\n   - Or should I create standard ones?\n\nPlease provide either:\n- **Option A**: The actual research findings, topics, and content you want included\n- **Option B**: Confirm you'd like me to create a sample digest with realistic parenting science topics and findings for demonstration\n\nOnce you provide this information, I'll format it into a professional HTML email and send it to parent@example.com via Gmail."
+  },
+  "test_passed": false
+}

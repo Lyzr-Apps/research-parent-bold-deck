@@ -1,0 +1,49 @@
+{
+  "agent_name": "Insights Synthesis Agent",
+  "agent_id": "69702e84d6d0dcaec1115906",
+  "agent_purpose": "analyzer",
+  "description": "Transforms research findings into organized, actionable parenting insights formatted for email delivery with topic sections",
+  "response_schema": {
+    "status": "string",
+    "result": {
+      "digest_title": "string",
+      "introduction": "string",
+      "topic_sections": [
+        "any"
+      ],
+      "total_topics_covered": "string",
+      "total_insights": "string",
+      "closing_message": "string"
+    },
+    "metadata": {
+      "agent_name": "string",
+      "timestamp": "string",
+      "error_reason": "string",
+      "note": "string"
+    }
+  },
+  "example_response": {
+    "status": "error",
+    "result": {
+      "digest_title": "Parenting Science Digest - Unable to Generate",
+      "introduction": "No research findings were provided to analyze. To create a parenting insights digest, please provide research findings or studies to translate into actionable tips.",
+      "topic_sections": [],
+      "total_topics_covered": "0",
+      "total_insights": "0",
+      "closing_message": "Please submit research findings, and I'll transform them into organized, actionable parenting insights ready for email delivery."
+    },
+    "metadata": {
+      "agent_name": "Insights Synthesis Agent",
+      "timestamp": "2025-01-18T00:00:00Z",
+      "error_reason": "No research findings provided in input",
+      "note": "This is a test response - actual digest requires research data as input"
+    }
+  },
+  "is_actual_tested": true,
+  "test_timestamp": "2026-01-21T01:43:35.330052",
+  "test_message_used": "Analyze this sample data for testing",
+  "actual_test_response": {
+    "raw_text": "```json\n{\n  \"status\": \"error\",\n  \"result\": {\n    \"digest_title\": \"Parenting Science Digest - Unable to Generate\",\n    \"introduction\": \"No research findings were provided to analyze and transform into parenting insights.\",\n    \"topic_sections\": [],\n    \"total_topics_covered\": \"0\",\n    \"total_insights\": \"0\",\n    \"closing_message\": \"Please provide research findings to generate your personalized parenting digest with actionable insights across nutrition, sleep, learning, behavior, emotional/social development, mental health, technology, and language development.\"\n  },\n  \"metadata\": {\n    \"agent_name\": \"Insights Synthesis Agent\",\n    \"timestamp\": \"2025-01-13T00:00:00Z\",\n    \"error_message\": \"No research findings provided in input\",\n    \"requested_topic_areas\": [\n      \"nutrition\",\n      \"sleep\",\n      \"learning\",\n      \"behavior\",\n      \"emotional/social development\",\n      \"mental health\",\n      \"technology\",\n      \"language\"\n    ]\n  }\n}\n```"
+  },
+  "test_passed": false
+}

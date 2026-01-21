@@ -1,0 +1,15 @@
+{
+  "agent_name": "Email Delivery Agent",
+  "agent_id": "69702ea3d6d0dcaec1115907",
+  "test_message": "Format and send a parenting science digest to parent@example.com with 10 research findings organized by topic.",
+  "expected_purpose": "assistant",
+  "timestamp": "2026-01-21T01:43:43.117344",
+  "is_valid_json": false,
+  "validation_errors": [
+    "Response is not valid JSON: Expecting value: line 1 column 1 (char 0)"
+  ],
+  "actual_response": {
+    "raw_text": "I need to clarify a few things before I can format and send your parenting science digest:\n\n1. **Research Content**: Do you have the 10 research findings already prepared, or would you like me to create sample/placeholder research insights for demonstration purposes?\n\n2. **Topics**: What topic areas should these findings cover? (e.g., Sleep, Nutrition, Learning & Development, Emotional Regulation, Screen Time, etc.)\n\n3. **Recipient Name**: Should I address the email to a specific name, or use a general greeting like \"Hello Parent\"?\n\n4. **Month/Year**: What month and year should appear in the subject line?\n\n5. **Synthesis Details**: Do you have:\n   - An introduction paragraph?\n   - A closing message?\n   - Or should I create standard ones?\n\nPlease provide either:\n- **Option A**: The actual research findings, topics, and content you want included\n- **Option B**: Confirm you'd like me to create a sample digest with realistic parenting science topics and findings for demonstration\n\nOnce you provide this information, I'll format it into a professional HTML email and send it to parent@example.com via Gmail."
+  },
+  "raw_response": "I need to clarify a few things before I can format and send your parenting science digest:\n\n1. **Research Content**: Do you have the 10 research findings already prepared, or would you like me to create sample/placeholder research insights for demonstration purposes?\n\n2. **Topics**: What topic areas should these findings cover? (e.g., Sleep, Nutrition, Learning & Development, Emotional Regulation, Screen Time, etc.)\n\n3. **Recipient Name**: Should I address the email to a specific name, or use a general greeting like \"Hello Parent\"?\n\n4. **Month/Year**: What month and year should appear in the subject line?\n\n5. **Synthesis Details**: Do you have:\n   - An introduction paragraph?\n   - A closing message?\n   - Or should I create standard ones?\n\nPlease provide either:\n- **Option A**: The actual research findings, topics, and content you want included\n- **Option B**: Confirm you'd like me to create a sample digest with realistic parenting science topics and findings for demonstration\n\nOnce you provide this information, I'll format it into a professional HTML email and send it to parent@example.com via Gmail."
+}
