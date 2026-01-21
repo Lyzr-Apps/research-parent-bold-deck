@@ -2,29 +2,26 @@
   "agent_name": "Insights Synthesis Agent",
   "agent_id": "69702e84d6d0dcaec1115906",
   "agent_purpose": "analyzer",
-  "description": "Transforms research findings into organized, actionable parenting insights with SPECIFIC actions parents can take, formatted for email delivery with topic sections",
+  "description": "Transforms 10-12 research findings covering all 8 parenting topic areas into actionable insights with specific what/how/when/why guidance for parents",
   "response_schema": {
     "status": "string (success|error)",
     "result": {
-      "digest_title": "string",
-      "introduction": "string",
-      "topic_sections": [
+      "synthesized_findings": [
         {
-          "topic_area": "string",
-          "emoji": "string",
-          "findings": [
-            {
-              "research_summary": "string",
-              "actionable_implication": "string (SPECIFIC action with numbers/times/frequencies)",
-              "source": "string",
-              "date": "string (YYYY-MM)"
-            }
-          ]
+          "title": "string (original research title)",
+          "source": "string (source name)",
+          "source_type": "string (peer-reviewed journal|meta-analysis|expert guidance|research institution)",
+          "date_published": "string (YYYY-MM)",
+          "topic_area": "string (nutrition|sleep|learning|behavior|emotional development|mental health|technology|language)",
+          "key_finding": "string (specific research finding with data)",
+          "actionable_implication": "string (detailed what/how/when/why parent action, 50-100 words)",
+          "credibility_score": "string (high|medium)",
+          "url": "string (working URL)"
         }
       ],
-      "total_topics_covered": "string",
-      "total_insights": "string",
-      "closing_message": "string"
+      "total_findings": "number (should be 10-12)",
+      "topics_covered": "array (all 8 topic areas: nutrition, sleep, learning, behavior, emotional development, mental health, technology, language)",
+      "synthesis_summary": "string (2-3 sentence overview of key themes across all 8 topics)"
     },
     "metadata": {
       "agent_name": "string",
@@ -34,56 +31,60 @@
   "example_response": {
     "status": "success",
     "result": {
-      "digest_title": "Parenting Science Digest - January 2025",
-      "introduction": "Welcome to this month's digest of the latest parenting science research, translated into actions you can take today.",
-      "topic_sections": [
+      "synthesized_findings": [
         {
-          "topic_area": "Sleep",
-          "emoji": "😴",
-          "findings": [
-            {
-              "research_summary": "Recent longitudinal study found that consistent bedtime routines between 7-8pm were associated with 40% fewer behavioral issues in preschool-aged children compared to irregular sleep schedules.",
-              "actionable_implication": "Set a consistent bedtime routine between 7-8pm for children under 5, including the same sequence of activities each night (bath, story, song, lights out).",
-              "source": "Child Development",
-              "date": "2024-11"
-            }
-          ]
+          "title": "Omega-3 Fatty Acids Enhance Working Memory in School-Age Children",
+          "source": "Journal of Nutritional Neuroscience",
+          "source_type": "peer-reviewed journal",
+          "date_published": "2024-11",
+          "topic_area": "nutrition",
+          "key_finding": "Double-blind study of 156 children aged 7-10 found that daily omega-3 supplementation (250mg DHA) over 6 months resulted in 23% improvement in working memory tasks compared to placebo group.",
+          "actionable_implication": "Include omega-3 rich foods (salmon, walnuts, chia seeds) in your child's diet 2-3 times per week. Aim for 250mg DHA daily through food or pediatrician-approved supplements. This supports the 23% improvement in working memory shown in recent research. Practical examples: serve grilled salmon on Tuesdays and Fridays, or add 1 tablespoon of ground chia seeds to morning oatmeal daily.",
+          "credibility_score": "high",
+          "url": "https://example.com/omega3-study"
         },
         {
-          "topic_area": "Nutrition",
-          "emoji": "🥗",
-          "findings": [
-            {
-              "research_summary": "Meta-analysis of 25 studies showed that children consuming omega-3 fatty acids 2-3 times per week demonstrated improved cognitive performance and focus in classroom settings.",
-              "actionable_implication": "Include omega-3 rich foods like salmon, sardines, or walnuts in your child's diet 2-3 times per week, aiming for 250-500mg of combined EPA/DHA for children ages 4-8.",
-              "source": "Journal of Pediatrics",
-              "date": "2024-10"
-            }
-          ]
+          "title": "Consistent Sleep Routines Reduce Behavioral Issues by 40%",
+          "source": "Child Development",
+          "source_type": "peer-reviewed journal",
+          "date_published": "2024-12",
+          "topic_area": "sleep",
+          "key_finding": "Longitudinal study tracking 800 preschool-aged children found that consistent bedtime routines between 7-8pm were associated with 40% fewer behavioral issues compared to irregular sleep schedules.",
+          "actionable_implication": "Establish a fixed bedtime routine between 7-8pm for children under 5, following the same 4-step sequence every night: warm bath (10 minutes), pajamas and tooth brushing (5 minutes), two bedtime stories (15 minutes), lights out by 8pm. Track consistency for 2 weeks to see behavioral improvements aligned with the 40% reduction shown in research.",
+          "credibility_score": "high",
+          "url": "https://example.com/sleep-routine-study"
         },
         {
-          "topic_area": "Technology",
-          "emoji": "📱",
-          "findings": [
-            {
-              "research_summary": "Large-scale study of 5,000 children found that limiting recreational screen time to 1 hour per day was associated with better social skills and lower anxiety levels in children ages 2-5.",
-              "actionable_implication": "Limit recreational screen time to 1 hour per day for children ages 2-5, and ensure screens are turned off at least 1 hour before bedtime.",
-              "source": "Developmental Psychology",
-              "date": "2024-12"
-            }
-          ]
+          "title": "Limited Screen Time Improves Social Skills in Preschoolers",
+          "source": "Dr. Emily Chen, Developmental Psychologist at Stanford Children's Hospital",
+          "source_type": "expert guidance",
+          "date_published": "2024-10",
+          "topic_area": "technology",
+          "key_finding": "Review of clinical observations with 200+ families shows that limiting recreational screen time to 1 hour daily for ages 2-5 correlates with stronger peer interaction skills and reduced anxiety symptoms.",
+          "actionable_implication": "Set a 1-hour daily screen time limit for children ages 2-5, using a timer to make it concrete. Schedule screen time in one block (e.g., 4-5pm) rather than throughout the day, and turn off all screens 60 minutes before bedtime. Replace screen time with hands-on play, outdoor activities, or family board games to build social skills naturally.",
+          "credibility_score": "medium",
+          "url": "https://example.com/expert-screen-time-guidance"
         }
       ],
-      "total_topics_covered": "3",
-      "total_insights": "3",
-      "closing_message": "Remember: Small, consistent actions make the biggest difference in your child's development. Start with one change this week!"
+      "total_findings": 12,
+      "topics_covered": [
+        "nutrition",
+        "sleep",
+        "learning",
+        "behavior",
+        "emotional development",
+        "mental health",
+        "technology",
+        "language"
+      ],
+      "synthesis_summary": "This month's research highlights the interconnected nature of child development, with strong evidence for specific interventions in nutrition (omega-3s), sleep consistency, and screen time management. Across all 8 topic areas, the common theme is that small, measurable actions—like 250mg DHA daily or a 7-8pm bedtime window—produce significant developmental benefits when applied consistently."
     },
     "metadata": {
       "agent_name": "Insights Synthesis Agent",
-      "timestamp": "2025-01-21T00:00:00Z"
+      "timestamp": "2026-01-21T10:30:00Z"
     }
   },
   "is_actual_tested": false,
-  "schema_updated": "2026-01-21T00:00:00Z",
-  "update_reason": "Enhanced to require SPECIFIC actionable implications with numbers, times, and frequencies instead of vague advice"
+  "schema_updated": "2026-01-21T10:30:00Z",
+  "update_reason": "CRITICAL UPDATE: Changed to process ALL 8 topic areas (not just 3-4), enhanced actionable implications with specific what/how/when/why guidance (50-100 words each), added source_type handling for diverse research sources, and updated schema to match new flat structure with synthesized_findings array"
 }

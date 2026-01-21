@@ -118,7 +118,7 @@
       {
         "agent_id": "69702e6a1d92f5e2dd227fa3",
         "agent_name": "Research Discovery Agent",
-        "description": "Searches for top 10 latest parenting science research findings",
+        "description": "Searches for 10-12 latest parenting science research findings across ALL 8 topic areas with verified working URLs",
         "provider": "Perplexity",
         "model": "sonar-pro",
         "temperature": 0.2,
